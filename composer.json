@@ -1,0 +1,9 @@
+{
+	"name": "webvimark/jqtreewidget",
+	"description": "Tree",
+	"autoload": {
+		"psr-4": {
+			"webvimark\\extensions\\jqtreewidget\\": ""
+		}
+	}
+}

@@ -1,0 +1,16 @@
+ul.jqtree-tree li.jqtree-selected > .jqtree-element, ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover {
+	background: none;
+}
+label.jqtree-inactive a {
+        color: gray;
+}
+span.jqtree-type {
+        color: gray;
+        font-size:12px;
+}
+#tree {
+	margin-left: 20px;
+}
+ul.jqtree-tree ul.jqtree_common {
+	margin-left: 20px;
+}
