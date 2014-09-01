@@ -34,6 +34,7 @@ If your model doesn't have _'status'_ or similar field, then just remove **'stat
         'parentIdField' => 'parent_id',
         'statusField'   => 'active',
         'orderField'    => 'sorter',
+        'withChildren'    => false, //default = true
         'leafName'      => function($model){
 			return Html::a($model->name, ['/content/page/update', 'id'=>$model->id]);
 		},

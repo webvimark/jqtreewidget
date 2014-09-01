@@ -68,6 +68,13 @@ class JQTreeWidget extends Widget
          */
         public $orderField = 'sorter';
 
+	/**
+	 * If user can move elements inside leafs (multidimensional tree or just list of elements)
+	 *
+	 * @var bool
+	 */
+	public $withChildren = true;
+
         /**
          * rollingThunder 
          *
@@ -80,9 +87,10 @@ class JQTreeWidget extends Widget
                 $this->_handle_leafs_delete();
                 $this->_handle_leafs_move();
 
-                $jsonTree = $this->_getJsonTree();
-
-                return $this->render('tree', compact('jsonTree'));
+                return $this->render('tree', [
+			'jsonTree'=>$this->_getJsonTree(),
+			'withChildren'=>$this->withChildren,
+		]);
         }
 
         /**

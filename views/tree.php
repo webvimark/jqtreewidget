@@ -2,6 +2,7 @@
 /**
  * @var $this yii\web\View
  * @var $jsonTree array
+ * @var $withChildren boolean
  */
 
 use yii\helpers\Html;
@@ -48,49 +49,62 @@ use yii\helpers\Html;
 
 <?php
 $js = <<<JS
- $('#tree').tree({
-                data: $jsonTree,
-                autoEscape: false,
-                dragAndDrop: true,
-		autoOpen: true,
-		useContextMenu: false
-        });
 
-        $('#tree').bind(
-            'tree.move',
-            function(event) {
-                    var oldPositions = new Array;
+var treeSelector = $('#tree');
 
-                    $('input[type="checkbox"]').each(function(){
-                            oldPositions.push($(this).val());
-                    });
+treeSelector.tree({
+	data: $jsonTree,
+	autoEscape: false,
+	dragAndDrop: true,
+	autoOpen: true,
+	onCanMoveTo: function(moved_node, target_node, position) {
+		if ( $withChildren )
+		{
+			return true;
+		}
+		else
+		{
+			return position!='inside';
+		}
+	},
+	useContextMenu: false
+});
 
-                    $.get('', {
-                            jqtree_is_moved : 'yes it is',
-                            moved_node_id : event.move_info.moved_node.id,
+treeSelector.bind(
+	'tree.move',
+	function(event) {
+		var oldPositions = [];
 
-                            target_node_id : event.move_info.target_node.id,
-                            target_node_parent_id : event.move_info.target_node.parent_id,
+		$('input[type="checkbox"]').each(function(){
+			oldPositions.push($(this).val());
+		});
 
-                            position : event.move_info.position,
+		$.get('', {
+			jqtree_is_moved : 'yes it is',
+			moved_node_id : event.move_info.moved_node.id,
 
-                            oldPositions : oldPositions
-                    });
-            }
-        );
+			target_node_id : event.move_info.target_node.id,
+			target_node_parent_id : event.move_info.target_node.parent_id,
 
-        $('.expand-all').on('click', function(){
-                $('.jqtree-closed').click();
-        });
+			position : event.move_info.position,
 
-        $('.collapse-all').on('click', function(){
-                $('.jqtree-toggler').each(function(){
-                        if (! $(this).hasClass('jqtree-closed'))
-                        {
-                                $(this).click();
-                        }
-                });
-        });
+			oldPositions : oldPositions
+		});
+	}
+);
+
+$('.expand-all').on('click', function(){
+	$('.jqtree-closed').click();
+});
+
+$('.collapse-all').on('click', function(){
+	$('.jqtree-toggler').each(function(){
+		if (! $(this).hasClass('jqtree-closed'))
+		{
+			$(this).click();
+		}
+	});
+});
 JS;
 
 $this->registerJs($js);
