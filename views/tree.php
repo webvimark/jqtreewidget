@@ -8,14 +8,17 @@
 use yii\helpers\Html;
 ?>
 
-<span class='btn btn-sm btn-default expand-all'>
-	<i class="fa fa-plus"></i>
-	<?= 'Expand' ?>
-</span>
-<span class='btn btn-sm btn-default collapse-all'>
-	<i class="fa fa-minus"></i>
-	<?= 'Collapse' ?>
-</span>
+<?php if ( $withChildren ): ?>
+	<span class='btn btn-sm btn-default expand-all'>
+		<i class="fa fa-plus"></i>
+			<?= 'Expand' ?>
+	</span>
+		<span class='btn btn-sm btn-default collapse-all'>
+		<i class="fa fa-minus"></i>
+			<?= 'Collapse' ?>
+	</span>
+<?php endif; ?>
+
 
 <span class='label label-default mall'>
         <?php echo "You can drag & drop elements."; ?>
