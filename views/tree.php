@@ -48,6 +48,8 @@ use yii\helpers\Html;
 <?php echo Html::endForm(); ?>
 
 <?php
+// Since $withChildren = false make js crash - use replacement
+$withChildren = $withChildren ? 1 : 0;
 $js = <<<JS
 
 var treeSelector = $('#tree');
@@ -58,14 +60,7 @@ treeSelector.tree({
 	dragAndDrop: true,
 	autoOpen: true,
 	onCanMoveTo: function(moved_node, target_node, position) {
-		if ( $withChildren )
-		{
-			return true;
-		}
-		else
-		{
-			return position!='inside';
-		}
+		return $withChildren == 1 || position!='inside';
 	},
 	useContextMenu: false
 });
