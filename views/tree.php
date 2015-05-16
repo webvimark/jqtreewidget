@@ -3,12 +3,14 @@
  * @var $this yii\web\View
  * @var $jsonTree array
  * @var $withChildren boolean
+ * @var $showExpandAndCollapse boolean
+ * @var $treeId string
  */
 
 use yii\helpers\Html;
 ?>
 
-<?php if ( $withChildren ): ?>
+<?php if ( $withChildren AND $showExpandAndCollapse ): ?>
 	<span class='btn btn-sm btn-default expand-all'>
 		<i class="fa fa-plus"></i>
 			<?= 'Expand' ?>
@@ -35,7 +37,7 @@ use yii\helpers\Html;
 
 <?php echo Html::hiddenInput('deleteLeafs', '1'); ?>
 
-<div id='tree'>
+<div id='<?= $treeId ?>'>
 </div>
 
 <hr>
@@ -55,7 +57,7 @@ use yii\helpers\Html;
 $withChildren = $withChildren ? 1 : 0;
 $js = <<<JS
 
-var treeSelector = $('#tree');
+var treeSelector = $('#$treeId');
 
 treeSelector.tree({
 	data: $jsonTree,

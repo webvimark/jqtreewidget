@@ -3,6 +3,7 @@ namespace webvimark\extensions\jqtreewidget;
 
 use yii\base\Widget;
 use yii\helpers\Html;
+use yii\helpers\Json;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use Yii;
@@ -16,6 +17,11 @@ use Yii;
  */
 class JQTreeWidget extends Widget
 {
+	/**
+	 * @var string
+	 */
+	public $treeId = 'tree';
+
 	/**
 	 * Callback function. Accept $model as argument
 	 *
@@ -75,6 +81,13 @@ class JQTreeWidget extends Widget
 	 */
 	public $withChildren = true;
 
+	/**
+	 * Show expand and collapse buttons ($withChildren also has to be true)
+	 *
+	 * @var bool
+	 */
+	public $showExpandAndCollapse = true;
+
         /**
          * rollingThunder 
          *
@@ -87,9 +100,11 @@ class JQTreeWidget extends Widget
                 $this->_handle_leafs_delete();
                 $this->_handle_leafs_move();
 
-                return $this->render('tree', [
-			'jsonTree'=>$this->_getJsonTree(),
-			'withChildren'=>$this->withChildren,
+		return $this->render('tree', [
+			'jsonTree'              => $this->_getJsonTree(),
+			'withChildren'          => $this->withChildren,
+			'showExpandAndCollapse' => $this->showExpandAndCollapse,
+			'treeId'                => $this->treeId,
 		]);
         }
 
@@ -115,8 +130,7 @@ class JQTreeWidget extends Widget
 				Yii::$app->session->setFlash('leafDeleted', 'Yep');
                         }
 
-                        if (isset($_SERVER['HTTP_REFERER']))
-                                Yii::$app->controller->redirect($_SERVER['HTTP_REFERER']);
+			Yii::$app->controller->refresh();
                 }
         }
 
@@ -186,7 +200,7 @@ class JQTreeWidget extends Widget
          */
         private function _getJsonTree()
         {
-                return json_encode($this->_getTree($this->statusField, $this->parentIdField));
+                return JSON::encode($this->_getTree($this->statusField, $this->parentIdField));
         }
 
         /**
